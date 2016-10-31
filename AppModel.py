@@ -20,7 +20,9 @@ class App(leancloud.Object):
         if not self.name:
             self.name = a.bundle_name
         lf = leancloud.File(self.file_name, f)
+        lf.save()
         pf = leancloud.File(a.bundle_name + 'appicon.png', io.BytesIO(a.app_icon))
+        pf.save()
         self.set('owner', self.owner)
         self.set('name', self.name)
         self.set('displayName', a.bundle_display_name)
