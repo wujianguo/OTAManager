@@ -1,0 +1,4 @@
+tornado>=4.2
+leancloud-sdk>=1.0.9
+requests
+pyopenssl
