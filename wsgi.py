@@ -19,7 +19,7 @@ leancloud.use_master_key(False)
 
 application = engine
 # 使用 `leancloud.HttpsRedirectMiddleware` 这个 WSGI 中间件包装一下原始的提供给 LeanEngine 的 WSGI 函数
-application = leancloud.HttpsRedirectMiddleware(application)
+# application = leancloud.HttpsRedirectMiddleware(application)
 
 if __name__ == '__main__':
     server = WSGIServer(('localhost', PORT), application)
