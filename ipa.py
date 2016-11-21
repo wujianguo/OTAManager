@@ -34,6 +34,7 @@ class IPA:
             m = pattern.match(path)
             if m is not None:
                 return self.zip.read(m.group())
+        return None
 
     @property
     def plist(self):
@@ -53,6 +54,6 @@ class IPA:
 
 def main():
     pass
-    
+
 if __name__ == '__main__':
     main()

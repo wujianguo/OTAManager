@@ -21,21 +21,24 @@ class App(leancloud.Object):
             self.name = a.bundle_name
         lf = leancloud.File(self.name + '.ipa', f)
         lf.save()
-        pf = leancloud.File(self.name + 'appicon.png', io.BytesIO(a.app_icon))
-        pf.save()
+        icon_url = "https://dn-J3ta8gqr.qbox.me/38ec7dc7c6edff00.png"
+        if a.app_icon:
+            pf = leancloud.File(self.name + 'appicon.png', io.BytesIO(a.app_icon))
+            pf.save()
+            icon_url = pf.url
         self.set('owner', self.owner)
         self.set('name', self.name)
         self.set('displayName', a.bundle_display_name)
         self.set('identifier', a.bundle_identifier)
         self.set('version', a.bundle_version)
-        self.set('icon_url', pf.url)
-        self.set('ipa', lf.url)
+        self.set('icon_url', icon_url)
+        self.set('ipa_url', lf.url)
         super(App, self).save()
 
     def json_data(self):
         ret = {
             'icon_url': self.get('icon_url'),
-            'ipa_url': self.get('ipa'),
+            'ipa_url': self.get('ipa_url'),
             'display_name': self.get('displayName'),
             'identifier': self.get('identifier'),
             'version': self.get('version'),

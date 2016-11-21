@@ -21,7 +21,7 @@ class InstallHandler(tornado.web.RequestHandler):
         try:
             app = AppModel.query(owner, name)
             plist_url = '{0}://{1}/{2}/{3}.plist'.format(self.request.protocol, self.request.host, owner, name)
-            qrcode = 'http://qr.topscan.com/api.php?w=200&text={{0}}&logo={{1}}'.format(urllib.parse.quote(self.request.full_url()), urllib.parse.quote(app.icon))
+            qrcode = 'http://qr.topscan.com/api.php?w=200&text={{0}}&logo={{1}}'.format(urllib.parse.quote(self.request.full_url()), urllib.parse.quote(app.icon_url))
             self.render("install.html", name=name, description='在safari打开并点击安装', url=plist_url, qrcode=qrcode)
         except:
             self.set_status(404)
@@ -31,7 +31,7 @@ class PListHandler(tornado.web.RequestHandler):
     def get(self, owner, name):
         try:
             app = AppModel.query(owner, name)
-            self.render("install.plist", name=name, ipa=app.get('ipa'), icon=app.get('icon_url'), identifier=app.get('identifier'), version=app.get('version'))
+            self.render("install.plist", name=name, ipa=app.get('ipa_url'), icon=app.get('icon_url'), identifier=app.get('identifier'), version=app.get('version'))
         except:
             self.set_status(404)
 
