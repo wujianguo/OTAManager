@@ -21,17 +21,21 @@ class App(leancloud.Object):
             self.name = a.bundle_name
         lf = leancloud.File(self.name + '.ipa', f)
         lf.save()
-        icon_url = "https://dn-J3ta8gqr.qbox.me/38ec7dc7c6edff00.png"
         if a.app_icon:
             pf = leancloud.File(self.name + 'appicon.png', io.BytesIO(a.app_icon))
             pf.save()
-            icon_url = pf.url
+        else:
+            pf = leancloud.File(self.name + 'appicon.png', 'https://dn-J3ta8gqr.qbox.me/38ec7dc7c6edff00.png')
+            pf.save()
+        icon_url = pf.url
+        thumbnail_url = pf.get_thumbnail_url(width=50, height=50)
         self.set('owner', self.owner)
         self.set('name', self.name)
         self.set('displayName', a.bundle_display_name)
         self.set('identifier', a.bundle_identifier)
         self.set('version', a.bundle_version)
         self.set('icon_url', icon_url)
+        self.set('icon_thumbnail_url', thumbnail_url)
         self.set('ipa_url', lf.url)
         super(App, self).save()
 
