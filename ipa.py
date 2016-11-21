@@ -29,7 +29,11 @@ class IPA:
 
     @property
     def app_icon(self):
-        return self.zip.read('Payload/VideoGo.app/AppIcon60x60@3x.png')
+        pattern = re.compile(r'Payload/[^/]*.app/AppIcon60x60@3x.png')
+        for path in self.zip.namelist():
+            m = pattern.match(path)
+            if m is not None:
+                return self.zip.read(m.group())
 
     @property
     def plist(self):
@@ -40,6 +44,7 @@ class IPA:
         for path in self.zip.namelist():
             m = pattern.match(path)
             if m is not None:
+                # print(m)
                 data = self.zip.read(m.group())
                 self.__plist = plistlib.loads(data)
         return self.__plist
