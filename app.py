@@ -31,7 +31,7 @@ class PListHandler(tornado.web.RequestHandler):
     def get(self, owner, name):
         try:
             app = AppModel.query(owner, name)
-            self.render("install.plist", name=name, ipa=app.get('ipa'), icon=app.get('icon'), identifier=app.get('identifier'), version=app.get('version'))
+            self.render("install.plist", name=name, ipa=app.get('ipa'), icon=app.get('icon_url'), identifier=app.get('identifier'), version=app.get('version'))
         except:
             self.set_status(404)
 
