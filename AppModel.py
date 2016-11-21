@@ -19,9 +19,9 @@ class App(leancloud.Object):
         a = ipa.IPA(f)
         if not self.name:
             self.name = a.bundle_name
-        lf = leancloud.File(self.file_name, f)
+        lf = leancloud.File(self.name + '.ipa', f)
         lf.save()
-        pf = leancloud.File(a.bundle_name + 'appicon.png', io.BytesIO(a.app_icon))
+        pf = leancloud.File(self.name + 'appicon.png', io.BytesIO(a.app_icon))
         pf.save()
         self.set('owner', self.owner)
         self.set('name', self.name)
@@ -32,9 +32,29 @@ class App(leancloud.Object):
         self.set('ipa', lf.url)
         super(App, self).save()
 
+    def json_data(self):
+        ret = {
+            'icon_url': self.get('icon'),
+            'ipa_url': self.get('ipa'),
+            'display_name': self.get('displayName'),
+            'identifier': self.get('identifier'),
+            'version': self.get('version'),
+            'owner': self.get('owner'),
+            'name': self.get('name'),
+            'created_at': str(self.created_at),
+            'updated_at': str(self.updated_at)
+            }
+        return ret
+
 def query(owner, name):
     q = App.query
     q.equal_to('owner', owner)
     q.equal_to('name', name)
     q.add_descending('updatedAt')
     return q.first()
+
+def main():
+    pass
+
+if __name__ == '__main__':
+    main()
