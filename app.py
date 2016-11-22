@@ -20,7 +20,7 @@ class InstallHandler(tornado.web.RequestHandler):
     def get(self, owner, name):
         try:
             app = AppModel.query(owner, name)
-            plist_url = '{0}://{1}/{2}/{3}.plist'.format(self.request.protocol, self.request.host, owner, name)
+            plist_url = '{0}://{1}/{2}/{3}.plist'.format("https", self.request.host, owner, name)
             qrcode = 'http://qr.topscan.com/api.php?w=200&text={0}'.format(urllib.parse.quote(self.request.full_url()))
             self.render("install.html", name=name, description='在safari打开并点击安装', url=plist_url, qrcode=qrcode)
         except:
@@ -40,8 +40,8 @@ class AppHandler(tornado.web.RequestHandler):
     def get(self, owner, name):
         try:
             app = AppModel.query(owner, name)
-            plist_url = '{0}://{1}/{2}/{3}.plist'.format(self.request.protocol, self.request.host, owner, name)
-            html_url = '{0}://{1}/install/{2}/{3}'.format(self.request.protocol, self.request.host, owner, name)
+            plist_url = '{0}://{1}/{2}/{3}.plist'.format("https", self.request.host, owner, name)
+            html_url = '{0}://{1}/install/{2}/{3}'.format("https", self.request.host, owner, name)
             ret = app.json_data()
             ret.update({'code': 0, 'msg': '', 'html_url': html_url, 'plist_url': plist_url})
             # ret = {'code': 0,
@@ -68,8 +68,8 @@ class AppHandler(tornado.web.RequestHandler):
         for meta in file_metas:
             app = AppModel.App(owner, meta['filename'], meta['body'], name)
             app.save()
-            plist_url = '{0}://{1}/{2}/{3}.plist'.format(self.request.protocol, self.request.host, owner, name)
-            html_url = '{0}://{1}/install/{2}/{3}'.format(self.request.protocol, self.request.host, owner, name)
+            plist_url = '{0}://{1}/{2}/{3}.plist'.format("https", self.request.host, owner, name)
+            html_url = '{0}://{1}/install/{2}/{3}'.format("https", self.request.host, owner, name)
             ret = app.json_data()
             ret.update({'code': 0, 'msg': '', 'html_url': html_url, 'plist_url': plist_url})
             self.write(json.dumps(ret))
@@ -86,8 +86,8 @@ class AppsHandler(tornado.web.RequestHandler):
             app = AppModel.App(owner, meta['filename'], meta['body'], None)
             app.save()
             name = app.get('name')
-            plist_url = '{0}://{1}/{2}/{3}.plist'.format(self.request.protocol, self.request.host, owner, name)
-            html_url = '{0}://{1}/install/{2}/{3}'.format(self.request.protocol, self.request.host, owner, name)
+            plist_url = '{0}://{1}/{2}/{3}.plist'.format("https", self.request.host, owner, name)
+            html_url = '{0}://{1}/install/{2}/{3}'.format("https", self.request.host, owner, name)
             ret = app.json_data()
             ret.update({'code': 0, 'msg': '', 'html_url': html_url, 'plist_url': plist_url})
             self.write(json.dumps(ret))
@@ -102,7 +102,7 @@ settings = {
 }
 
 application = tornado.web.Application([
-    (r"/", MainHandler),
+    # (r"/", MainHandler),
     (r"/install/(.*)/(.*)", InstallHandler),
     (r"/(.*)/(.*).plist", PListHandler),
     (r"/api/(.*)/(.*)", AppHandler),
