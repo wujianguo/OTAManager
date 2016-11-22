@@ -88,5 +88,6 @@ ENV/
 # Rope project settings
 .ropeproject
 .avoscloud/
+.leancloud/
 
 .DS_Store
