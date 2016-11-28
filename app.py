@@ -58,9 +58,11 @@ class AppHandler(tornado.web.RequestHandler):
             #     'created_at': str(app.created_at),
             #     'updated_at': str(app.updated_at)
             #     }
+            self.set_header('Content-Type', 'application/json')
             self.write(json.dumps(ret))
         except:
             self.set_status(404)
+            self.set_header('Content-Type', 'application/json')
             self.write(json.dumps({'code': 404, 'msg': 'not found'}))
 
     def post(self, owner, name):
@@ -72,6 +74,7 @@ class AppHandler(tornado.web.RequestHandler):
             html_url = '{0}://{1}/install/{2}/{3}'.format("https", self.request.host, owner, name)
             ret = app.json_data()
             ret.update({'code': 0, 'msg': '', 'html_url': html_url, 'plist_url': plist_url})
+            self.set_header('Content-Type', 'application/json')
             self.write(json.dumps(ret))
             break
 
@@ -90,6 +93,7 @@ class AppsHandler(tornado.web.RequestHandler):
             html_url = '{0}://{1}/install/{2}/{3}'.format("https", self.request.host, owner, name)
             ret = app.json_data()
             ret.update({'code': 0, 'msg': '', 'html_url': html_url, 'plist_url': plist_url})
+            self.set_header('Content-Type', 'application/json')
             self.write(json.dumps(ret))
             break
 
