@@ -15,6 +15,32 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("index.html")
 
+class LinkHandler(tornado.web.RequestHandler):
+    
+    def get(self, name):
+        image_url = "https://coding.net/static/project_icon/scenery-12.png"
+        description = "description"
+        button = "button"
+        self.render("test.html", name=name, image_url=image_url, description=description, button=button)
+
+
+class AppleAssociationHandler(tornado.web.RequestHandler):
+    
+    def get(self):
+        ret = {
+            "applinks": {
+                "apps": [],
+                "details": [
+                    {
+                        "appID": "ZEDNAR7A4E.com.haixue.app.nim",
+                        "paths": [ "/link/*"]
+                    }
+                ]
+            }
+        }
+        self.set_header('Content-Type', 'application/json')
+        self.write(json.dumps(ret)) 
+
 class InstallHandler(tornado.web.RequestHandler):
 
     def get(self, owner, name):
@@ -107,6 +133,8 @@ settings = {
 
 application = tornado.web.Application([
     # (r"/", MainHandler),
+    (r"/apple-app-site-association", AppleAssociationHandler),
+    (r"/link/(.*)", LinkHandler),
     (r"/install/(.*)/(.*)", InstallHandler),
     (r"/(.*)/(.*).plist", PListHandler),
     (r"/api/(.*)/(.*)", AppHandler),
